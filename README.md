@@ -3,8 +3,8 @@ A # ⚖️ HakiBot – AI-Powered Legal Assistant for Kenya
 
 **HakiBot** is an intelligent question-answering system that helps Kenyan citizens access quick and accurate legal information. It focuses on **labour rights** and **police conduct**, providing answers derived from the Kenyan Constitution and relevant laws. This tool is designed for awareness, empowerment, and civic education.
 
-
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://chatbot-template.streamlit.app/)
+link
+https://fictional-fortnight-pj77r949xwp9267jp-8501.app.github.dev/
 
 ### How to run it on your own machine
 
