@@ -1,2 +1,5 @@
 streamlit
 openai
+faiss-cpu
+pandas
+sentence-transformers
