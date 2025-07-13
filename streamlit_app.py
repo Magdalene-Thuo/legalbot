@@ -1,56 +1,58 @@
 import streamlit as st
 from openai import OpenAI
 
-# Show title and description.
-st.title("💬 HakiBot")
-st.write(
-    "This is a simple HakiBot that uses OpenAI's GPT-3.5 model to generate responses. "
-    "To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
-    "You can also learn how to build this app step by step by [following our tutorial](https://docs.streamlit.io/develop/tutorials/llms/build-conversational-apps)."
-)
+# -------------------- Styling --------------------
+st.markdown("""
+    <style>
+    body { font-family: 'Segoe UI', sans-serif; background-color: #f5f9ff; }
+    .main { background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.05); }
+    .stChatMessage { padding: 10px; margin-bottom: 10px; border-radius: 8px; }
+    .stChatMessage.user { background-color: #d1e7dd; text-align: right; }
+    .stChatMessage.assistant { background-color: #f8d7da; text-align: left; }
+    </style>
+""", unsafe_allow_html=True)
 
-# Ask user for their OpenAI API key via `st.text_input`.
-# Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
-# via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
-openai_api_key = st.text_input("OpenAI API Key", type="password")
+# -------------------- Title & Description --------------------
+st.title("💬 HakiBot – Your Legal Companion")
+st.write("Welcome to **HakiBot**, a free chatbot helping Kenyans learn about their legal rights 🇰🇪.\n\n📘 _Ask questions like 'What are land rights for women?' or 'How does divorce work in Kenya?'_")
+
+# -------------------- API Key Input --------------------
+openai_api_key = st.text_input("🔑 Enter your OpenAI API Key", type="password")
 if not openai_api_key:
-    st.info("Please add your OpenAI API key to continue.", icon="🗝️")
-else:
+    st.info("Please enter your OpenAI key to begin the conversation.", icon="🗝️")
+    st.stop()
 
-    # Create an OpenAI client.
-    client = OpenAI(api_key=openai_api_key)
+# -------------------- OpenAI Client --------------------
+client = OpenAI(api_key=openai_api_key)
 
-    # Create a session state variable to store the chat messages. This ensures that the
-    # messages persist across reruns.
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
+# -------------------- Session State --------------------
+if "messages" not in st.session_state:
+    st.session_state.messages = [{"role": "assistant", "content": "👋 Hi, I'm HakiBot! Ask me any question about Kenyan law."}]
 
-    # Display the existing chat messages via `st.chat_message`.
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+# -------------------- Display Messages --------------------
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
 
-    # Create a chat input field to allow the user to enter a message. This will display
-    # automatically at the bottom of the page.
-    if prompt := st.chat_input("What is up?"):
+# -------------------- Chat Input --------------------
+user_input = st.chat_input("Type your legal question here...")
 
-        # Store and display the current prompt.
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
+if user_input:
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    with st.chat_message("user"):
+        st.markdown(user_input)
 
-        # Generate a response using the OpenAI API.
-        stream = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages
-            ],
-            stream=True,
-        )
+    # Get response from GPT
+    stream = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages],
+        stream=True,
+    )
 
-        # Stream the response to the chat using `st.write_stream`, then store it in 
-        # session state.
-        with st.chat_message("assistant"):
-            response = st.write_stream(stream)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+    with st.chat_message("assistant"):
+        response = st.write_stream(stream)
+    st.session_state.messages.append({"role": "assistant", "content": response})
+
+# -------------------- Legal Disclaimer --------------------
+st.divider()
+st.caption("⚠️ **Disclaimer:** HakiBot provides general legal information, not legal advice. For personal matters, please consult a licensed Kenyan advocate or legal professional.")
