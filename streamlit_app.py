@@ -12,10 +12,16 @@ body { font-family: 'Segoe UI', sans-serif; background-color: #eef2f7; }
 """, unsafe_allow_html=True)
 
 # -------------------- Title & Language Toggle --------------------
-st.title("🤝 HakiBot: Your Kenyan Legal Companion")
+st.title("💼⚖️ HakiBot – Kenyan Legal Assistant")
+st.write("""
 language = st.radio("🌐 Choose Language", ["English", "Swahili"])
 sw = language == "Swahili"
+Welcome to **HakiBot**, your friendly legal chatbot focused on:
+- 🧑‍🏭 **Employment Law** (contracts, rights, workplace disputes)
+- 🚓 **Arrest and Court Process** (your rights when arrested, bail, trial procedure)
 
+👋 Type your question below to get started.
+""")
 # -------------------- API Key Input --------------------
 openai_api_key = st.text_input("🔑 OpenAI API Key", type="password")
 if not openai_api_key:
