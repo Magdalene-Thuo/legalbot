@@ -14,6 +14,7 @@ body { font-family: 'Segoe UI', sans-serif; background-color: #eef2f7; }
 # -------------------- Title & Language Toggle --------------------
 st.title("💼⚖️ HakiBot – Kenyan Legal Assistant")
 st.write("""
+st.title("🤝 HakiBot: Your Kenyan Legal Companion")
 language = st.radio("🌐 Choose Language", ["English", "Swahili"])
 sw = language == "Swahili"
 Welcome to **HakiBot**, your friendly legal chatbot focused on:
