@@ -53,6 +53,7 @@ for ex in examples.get(topic, []):
     st.markdown(f"- _{ex}_")
 
 # -------------------- Session State --------------------
+sw = True  # or False, depending on your desired default language
 if "messages" not in st.session_state:
     welcome = "Karibu! Uliza swali lolote kuhusu sheria za kazi au kukamatwa na kufikishwa mahakamani." if sw else "Welcome! Ask anything about employment law or being arrested and taken to court."
     st.session_state.messages = [{"role": "assistant", "content": welcome}]
